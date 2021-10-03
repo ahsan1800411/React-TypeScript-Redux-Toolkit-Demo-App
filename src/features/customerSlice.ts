@@ -10,6 +10,11 @@ type Customer = {
   food: string[];
 };
 
+type AddFoodToCustomerPayload = {
+  food: string;
+  id: string;
+};
+
 const initialState: CustomerState = {
   value: [],
 };
@@ -17,9 +22,23 @@ const initialState: CustomerState = {
 export const customerSlice = createSlice({
   name: "customers",
   initialState,
-  reducers: {},
+  reducers: {
+    addCustomer: (state, action: PayloadAction<Customer>) => {
+      state.value.push(action.payload);
+    },
+    addFoodToCustomer: (
+      state,
+      action: PayloadAction<AddFoodToCustomerPayload>
+    ) => {
+      state.value.forEach((customer) => {
+        if (customer.id === action.payload.id) {
+          customer.food.push(action.payload.food);
+        }
+      });
+    },
+  },
 });
 
-export const {} = customerSlice.actions;
+export const { addCustomer, addFoodToCustomer } = customerSlice.actions;
 
 export default customerSlice.reducer;
